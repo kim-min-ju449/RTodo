@@ -1,35 +1,33 @@
 import ToDoForm from "./component/ToDoForm";
 import './App.css';
 import ToDoList from "./component/ToDoList";
-import ToDo from "./component/ToDo"
 import {useState, useRef, useCallback} from 'react';
+import data from './data.json';
 
 
 const App =()=>{
-  const [todos, setTodos] = useState([
+  const [todos, setTodos] = useState(data);
 
-  ]);
-
-  const nextId = useRef(4);
+  console.log(data, todos,'----')
 
   const onInsert = useCallback(
       text =>{
-        const todo = {
-          id: nextId.current,
-          text,
-          checked: true,
-        };
-        setTodos(todos.concat(todo));
-        nextId.current +=1;
+        // const todo = {
+        //   id: nextId.current,
+        //   text,
+        //   complete: true,
+        // };
+        // setTodos(todos.concat(todo));
+        // nextId.current +=1;
       },
       [todos],
   );
 
   const onToggle = useCallback(
-      id => {
+      (id) => {
         setTodos(
-            todos.map(todo =>
-                todo.id === id ? { ...todo, checked: !todo.checked}: todo,
+            todos.map((todo) =>
+                todo.id === id ? { ...todo, complete: !todo.complete}: {...todo},
             ),
         );
       },
@@ -38,9 +36,7 @@ const App =()=>{
   return (
     <div>
       <ToDoForm onInsert={onInsert}/>
-        <ToDoList props={setTodos} onToggle={onToggle}/>
-        <ToDo/>
-
+        <ToDoList todos={todos} onToggle={onToggle}/>
     </div>
   );
 }
